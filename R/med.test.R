@@ -1,7 +1,7 @@
 #' @title Sample Size for Log-Transformed t-Test (O’Keeffe et al., 2017)
 #'
 #' @description
-#' Computes the required sample size for comparing two independent groups
+#' Computes the required sample size for comparing two independent positively skewed outcome groups
 #' using a log-transformed t-test, as described by O’Keeffe et al. (2017).
 #' The method accounts for unequal standard deviations or ranges
 #' and supports both one- and two-sided alternatives.
@@ -19,14 +19,14 @@
 #'     \item `"one.sided"` — one-sided test.
 #'   }
 #' @param alpha Numeric value for the significance level (default = 0.05).
-#' @param power Numeric value for desired power (default = 0.90).
+#' @param power Numeric value for desired power (default = 0.80).
 #'
 #' @details
 #' The function uses the log transformation to handle skewed data (e.g., median-based analysis)
 #' and calculates the log-transformed standard deviations as:
-#' \deqn{\sigma = \log(0.5 + \sqrt{0.25 + (s^2 / m^2)})}
+#' \deqn{\sigma^2 = \log((1/2) + \sqrt{(1/4) + (s^2 / m^2)})}
 #' The resulting formula for sample size per group is:
-#' \deqn{n = \frac{(\sigma_1 + \sigma_2)(z_{\alpha} + z_{\beta})^2}{(\log(m_1) - \log(m_2))^2}}
+#' \deqn{n = \frac{(\sigma_1^2 + \sigma_2^2)(z_{\alpha} + z_{\beta})^2}{(\log(m_1) - \log(m_2))^2}}
 #'
 #' @return A list (invisible) containing:
 #' \itemize{
@@ -44,10 +44,9 @@
 #' med.test(m = c(25, 18), s = c(40, 35), variability = "range", alpha = 0.05)
 #'
 #' @references
-#' O’Keeffe AG, Ambler G, Barber JA (2017).
-#' Sample size calculations based on the lognormal distribution for a clinical trial.
-#' *Journal of Biopharmaceutical Statistics*, 27(5), 857–871.
-#' <https://doi.org/10.1080/10543406.2016.1245223>
+#' O’Keeffe AG, Ambler G, Barber JA (2017). 
+#' Sample size calculations based on a difference in medians for positively skewed outcomes in health care studies. 
+#' BMC Med Res Methodol. 2017 Dec 2;17(1):157. doi: 10.1186/s12874-017-0426-1. PMID: 29197347; PMCID: PMC5712177.
 #'
 #' @export
 
@@ -56,7 +55,7 @@ med.test <- function(m = c(m1, m2),
                      variability="SD",
                      alternative="two.sided",
                      alpha = 0.05,
-                     power = 0.90)
+                     power = 0.80)
 {
 
   if (length(m) != 2 || length(s) != 2) {
